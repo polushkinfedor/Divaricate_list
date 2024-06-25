@@ -26,12 +26,19 @@ void struct_load_tf(divaricate_list& exemple);
 void struct_sort(divaricate_list& exemple);
 void struct_grouped(divaricate_list& exemple); // grouped
 
+void add_del_element(divaricate_list& exemple, int op_code); // 0 -- добавление, 1 -- удаление элемента, 2 -- удаление ветки элемента
+void add_del_branch_element(divaricate_list& exemple, bool add_or_del, bool branch_with_el=false); // true -- добавить, false -- удалить
+void replace_el(divaricate_list& exemple);
+void replace_br_el(divaricate_list& exemple);
+
 //-------------------------- информационные программные единицы --------------------------------
 
+int file_open_menu(std::string filename);
 void exit_message(bool& exit_flag);
+void communication_message (divaricate_list& exemple, std::string txt);
 void no_element_message();
 void sort_message();
-void incorrect_data_message(bool type);
+void incorrect_data_message(bool type, bool many_str = true);
 void el_repeat_message();
 void incorrect_file_message();
 
@@ -44,11 +51,12 @@ bool check_file_name(const std::string& file_name);
 bool correct_file(std::ifstream& ifile);
 bool correct_file(std::fstream& ifile);
 
-//-------------------------- функцианальные программные единицы --------------------------------
+//-------------------------- функциональные программные единицы --------------------------------
 
 void set_color(std::string text, int color);
 int get_flight_number();
 std::string get_airport_name();
+void get_airport_names(std::vector<std::string>& ans);
 void delete_extraspace_string(std::string& str);
 
 #endif //DUAL_LIST_LAB_INTERFACE_DIVLIST_H

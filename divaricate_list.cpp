@@ -73,11 +73,6 @@ void divaricate_list::add(int fl_num) {
     len_depth += 1; // при добавлении увеличиваем глубину структуры
 }
 
-void divaricate_list::add_branch(int fl_num, const std::string& name1, const std::string& name2) {
-    add(fl_num);
-    find_last().add_childs({ name1, name2 });
-}
-
 void divaricate_list::clear() {
     _base_divaricate_list* tmp_ptr_prev = nullptr; // инициализируем вспомогательные указатели
     if (first_el_ptr == nullptr) return;
@@ -195,6 +190,7 @@ void divaricate_list::inputFF(std::ifstream& ifile) {
         if (input_str == "") break;
 
         int fl_number = std::stoi(input_str.substr(0, input_str.find(' '))); // парсинг строки вида "FL_NUM AN1 AN2"
+        if (this->contain(fl_number)) continue;
         this->add(fl_number);
 
         if (input_str.find(' ') != -1) {
@@ -218,6 +214,7 @@ void divaricate_list::inputFF(std::fstream& ifile) {
         if (input_str == "") break;
 
         int fl_number = std::stoi(input_str.substr(0, input_str.find(' '))); // парсинг строки вида "FL_NUM AN1 AN2"
+        if (this->contain(fl_number)) continue;
         this->add(fl_number);
 
         if (input_str.find(' ') != -1) {
@@ -296,11 +293,18 @@ void divaricate_list::swap(_base_divaricate_list* el, int status) {
 
 void divaricate_list::sort(bool ltor) {
     system("cls");
+
+    if (this->len() == 2) { // вырожденный случай сортировки двух элементов
+        if (ltor and first_el_ptr->get_data() > first_el_ptr->next_el_ptr->get_data()) swap(first_el_ptr, first_el);
+        else if (!ltor and first_el_ptr->get_data() < first_el_ptr->next_el_ptr->get_data()) swap(first_el_ptr, first_el);
+        return;
+    }
+
     for (int i = 1; i < len(); i++) {
         bool was_change = 0;
         _base_divaricate_list* check_el = first_el_ptr;
         auto comparator = [ltor](int a, int b) { if(ltor) return a>b; else return a<b; };
-
+        int status = first_el;
         for (int j = 0; j < len() - i; j++) {
             if (j == 0 and comparator(check_el->get_data(), check_el->next_el_ptr->get_data())) {
                 was_change = true;
@@ -313,7 +317,7 @@ void divaricate_list::sort(bool ltor) {
             }
             if (j != 0) check_el = check_el->next_el_ptr;
         }
-        if (was_change == false) break;
+        if (was_change == false) return;
     }
 }
 

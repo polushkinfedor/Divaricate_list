@@ -16,8 +16,8 @@ struct _child_divaricate_list;
 
 struct divaricate_list {
     // методы
-    _base_divaricate_list& operator()(int fl_num);
     _base_divaricate_list& find_last();
+    _base_divaricate_list& operator()(int fl_num);
     _base_divaricate_list& operator[](int index);
     int len();
 
@@ -30,13 +30,11 @@ struct divaricate_list {
     void outputTF(std::fstream& ofile);
 
     void add(int fl_num);
-    void add_branch(int fl_num, const std::string& name1, const std::string& name2);
 
     void clear();
     void del_last();
     void del_element(int fl_num);
 
-    void swap(_base_divaricate_list* el1, int status);
     void sort(bool ltor);
 
     bool contain(int fl_num);
@@ -46,6 +44,7 @@ struct divaricate_list {
 private:
     // поля
     int len_depth = 0;
+    void swap(_base_divaricate_list* el1, int status);
     _base_divaricate_list* first_el_ptr = nullptr;
 
     // методы
